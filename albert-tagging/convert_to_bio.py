@@ -33,9 +33,9 @@ if __name__ == '__main__':
     from tqdm import tqdm
     from sklearn.utils import shuffle
 
-    FILE = 'test.txt'
+    FILE = 'data/test.txt'
 
-    df = pd.read_json('dcard_structed.json')
+    df = pd.read_json('data/dcard_structed.json')
     df = shuffle(df)
 
     text = (df['title'] + df['text']).to_list()[140000:]

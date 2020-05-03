@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
 from transformers import BertTokenizerFast
+from sklearn.utils import shuffle
 
 
 class KpBioDataset(Dataset):
@@ -44,6 +45,7 @@ class KpBioDataset(Dataset):
         ds = KpBioDataset('q', tokenizer, encoded=True)
         print('reading file...')
         data = pd.read_json(file)
+        data = shuffle(data)
         print('finished')
         ds.tokenizer = tokenizer
         ds.mode = mode
@@ -108,9 +110,8 @@ class KpBioDataset(Dataset):
 
 if __name__ == '__main__':
     tokenizer = BertTokenizerFast.from_pretrained('./albert_base')
-    # ds = KpBioDataset('train.txt', tokenizer, maxlen=512)
-    # ds.save('./train.json')
-    ds = KpBioDataset.from_encoded('train.json', tokenizer)
-    tmp = ds[:2]
-    _, _, _, ans = tmp
-    print(ans.tolist())
+    ds = KpBioDataset('./data/test.txt', tokenizer, maxlen=512)
+    ds.save('./data/test.json')
+    # ds = KpBioDataset.from_encoded('./data/test.json', tokenizer)
+    tmp = ds[0]
+    print(tmp)
