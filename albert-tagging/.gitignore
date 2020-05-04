@@ -1,3 +1,5 @@
 albert_base/*
 data/*
 ckpt/*
+tfboard/* 
+logs/

@@ -41,9 +41,13 @@ if __name__ == '__main__':
     text = (df['title'] + df['text']).to_list()[140000:]
     keywords = df['extract_keyphrases'].to_list()[140000:]
     
+    cnt = 0
     with open(FILE, 'w') as f:
         for t, k in zip(text, keywords):
-            t = remove_special_char(t)
-            bio = convert_to_bio_tags(t, k)
-            f.write(t + '\n')
-            f.write(''.join(bio) + '\n')
+            if k:
+                cnt += 1
+                t = remove_special_char(t)
+                bio = convert_to_bio_tags(t, k)
+                f.write(t + '\n')
+                f.write(''.join(bio) + '\n')
+    print(cnt)
