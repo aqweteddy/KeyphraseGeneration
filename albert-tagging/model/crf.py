@@ -1,5 +1,4 @@
 # from https://github.com/chenxiaoyouyou/Bert-BiLSTM-CRF-pytorch/blob/master/model/crf.py
-
 import torch
 from torch.autograd import Variable
 import torch.nn as nn
@@ -21,18 +20,18 @@ def log_sum_exp(vec, m_size):
 
 
 class CRF(nn.Module):
-    def __init__(self, target_size=4, average_batch=True, use_cuda=True):
+
+    def __init__(self, target_size, use_cuda=True, average_batch=True):
         """
         Args:
             target_size: int, target size
-            use_cuda: bool, default: true
-            average_batch: bool, whether loss is averaged, default is True
+            use_cuda: bool, 是否使用gpu, default is True
+            average_batch: bool, loss是否作平均, default is True
         """
         super(CRF, self).__init__()
         self.use_cuda = use_cuda
         self.target_size = target_size
         self.average_batch = average_batch
-
         self.START_TAG_IDX, self.END_TAG_IDX = -2, -1
         init_transitions = torch.zeros(self.target_size+2, self.target_size+2)
         init_transitions[:, self.START_TAG_IDX] = -1000.
@@ -92,7 +91,7 @@ class CRF(nn.Module):
             mask: size=(batch_size, seq_len)
         Returns:
             decode_idx: (batch_size, seq_len), viterbi decode结果
-            path_score: size=(batch_size, 1), score of each sentence
+            path_score: size=(batch_size, 1), 每个句子的得分
         """
         batch_size = feats.size(0)
         seq_len = feats.size(1)
@@ -218,5 +217,6 @@ class CRF(nn.Module):
         forward_score, scores = self._forward_alg(feats, mask)
         gold_score = self._score_sentence(scores, mask, tags)
         if self.average_batch:
+            print(scores.shape, gold_score.shape)
             return (forward_score - gold_score) / batch_size
         return forward_score - gold_score

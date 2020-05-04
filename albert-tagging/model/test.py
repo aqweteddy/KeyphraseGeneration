@@ -12,6 +12,5 @@ mask_ids = torch.tensor(mask_ids).unsqueeze(0).cuda()
 trg = torch.tensor(trg).unsqueeze(0).cuda()
 
 model = AlbertCrf(3, model_path='../albert_base').cuda()
-hidden = model(inp_ids, seg_ids, mask_ids)
-print(hidden.size(), trg.size())
-loss = model.loss(hidden, mask_ids, trg)
+loss, output = model(inp_ids, seg_ids, mask_ids, trg)
+print(loss, output)

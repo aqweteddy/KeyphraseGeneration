@@ -111,7 +111,7 @@ class KpBioDataset(Dataset):
 if __name__ == '__main__':
     tokenizer = BertTokenizerFast.from_pretrained('./albert_base')
     ds = KpBioDataset('./data/train.txt', tokenizer, maxlen=256)
-    ds.save('./data/train.json')
+    ds.save('./data/small.json')
     # ds = KpBioDataset.from_encoded('./data/test.json', tokenizer)
     tmp = ds[0]
     print(tmp)
